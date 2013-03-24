@@ -15,8 +15,8 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^$', views.index, name='index'),
     url(r'^(?P<poll_id>\d+)/$', views.detail, name='detail'),
-#    (r'^(?P<poll_id>\d+)/results/$','results'),
-#    (r'^(?P<poll_id>\d+)/vote/$','vote'),
+    url(r'^(?P<poll_id>\d+)/results/$',views.results, name='results'),
+    url(r'^(?P<poll_id>\d+)/vote/$',views.vote, name='vote'),
     # Uncomment the next line to enable the admin:
     #url(r'^admin/', include(admin.site.urls)),
 )
