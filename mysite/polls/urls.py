@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, include, url
+from django.views.generic import DetailView, ListView
 from django.conf.urls.defaults import *
 from polls import views
+from polls.models import Poll
 
 # Uncomment the next two lines to enable the admin:
 #from django.contrib import admin
@@ -13,9 +15,27 @@ urlpatterns = patterns('',
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    url(r'^$', views.index, name='index'),
-    url(r'^(?P<poll_id>\d+)/$', views.detail, name='detail'),
-    url(r'^(?P<poll_id>\d+)/results/$',views.results, name='results'),
+
+    #url(r'^$', views.index, name='index'),
+    #url(r'^(?P<poll_id>\d+)/$', views.detail, name='detail'),
+    #url(r'^(?P<poll_id>\d+)/results/$',views.results, name='results'),
+
+    url(r'^$',
+        ListView.as_view(
+            queryset=Poll.objects.order_by('-pub_date')[:5],
+            context_object_name='latest_poll_list',
+            template_name='polls/index.html'),
+        name='index'),
+    url(r'^(?P<pk>\d+)/$',
+        DetailView.as_view(
+            model=Poll,
+            template_name='polls/detail.html'),
+        name='detail'),
+    url(r'^(?P<pk>\d+)/results/$',
+        DetailView.as_view(
+            model=Poll,
+            template_name='polls/results.html'),
+        name='results'),
     url(r'^(?P<poll_id>\d+)/vote/$',views.vote, name='vote'),
     # Uncomment the next line to enable the admin:
     #url(r'^admin/', include(admin.site.urls)),
